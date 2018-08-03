@@ -3,7 +3,7 @@ bl_info = {
     "author": "Samuel Bernou",
     "version": (0, 0, 1),
     "blender": (2, 79, 0),
-    "location": "",
+    "location": "ctrl + alt + shift + N",
     "description": "reload file with your own UI",
     "warning": "",
     "wiki_url": "",
