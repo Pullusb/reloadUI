@@ -1,8 +1,8 @@
 bl_info = {
     "name": "Reload UI",
     "author": "Samuel Bernou",
-    "version": (0, 1, 0),
-    "blender": (2, 81, 0),
+    "version": (0, 0, 1),
+    "blender": (2, 79, 0),
     "location": "ctrl + alt + shift + N",
     "description": "reload file with your own UI",
     "warning": "",
@@ -11,17 +11,32 @@ bl_info = {
     "category": "System"}
 
 import bpy
-from bpy.utils import register_class, unregister_class
+'''
+class Reload_with_startup_UI_OP(bpy.types.Operator):
+    bl_idname = "utils.reload_with_startup_ui"
+    bl_label = "Revert with startup UI"
+    bl_description = "reload the file with own startup file UI"
+    bl_options = {"REGISTER"}
+
+    def execute(self, context):
+        my_file = bpy.data.filepath#get the filepath of the blend
+        bpy.ops.wm.read_homefile()#start new file (load startup file)
+        bpy.ops.wm.open_mainfile(filepath=my_file, load_ui=False)#reload file with load UI off
+        # PROBLEM : keeps reverting and opening recent-file without loading UI...
+        #Solution : refresh load_UI pref
+        bpy.context.user_preferences.filepaths.use_load_ui = bpy.context.user_preferences.filepaths.use_load_ui
+        return {"FINISHED"}
+'''
 
 def timeline_view_all(all_view=True):
     for window in bpy.context.window_manager.windows:
         for area in window.screen.areas:
-            if area.type == 'DOPESHEET_EDITOR':#TIMELINE
+            if area.type == 'TIMELINE':
                 for region in area.regions:
                     if region.type == 'WINDOW':
                         override = {'window': window, 'screen': window.screen, 'area': area, 'region': region}
                         #can simply do operator here
-                        bpy.ops.action.view_all(override)#bpy.ops.time.view_all(override)
+                        bpy.ops.time.view_all(override)
                         if not all_view:
                             break
 
@@ -34,7 +49,7 @@ def go_camera_view(all_view=True):
                     break
 
 
-class RUI_OT_Reload_with_startup_UI_OP(bpy.types.Operator):
+class Reload_with_startup_UI_OP(bpy.types.Operator):
     bl_idname = "utils.reload_with_startup_ui"
     bl_label = "Revert with startup UI"
     bl_description = "reload the file with own startup file UI"
@@ -47,14 +62,11 @@ class RUI_OT_Reload_with_startup_UI_OP(bpy.types.Operator):
         bpy.ops.wm.read_homefile()#start new file (load startup file)
         bpy.ops.wm.open_mainfile(filepath=my_file, load_ui=False)#reload file with load UI off
         bpy.context.scene.frame_set(f)
-        
         # PROBLEM : keeps reverting and opening recent-file without loading UI...
         #Solution : refresh load_UI pref
-        bpy.context.preferences.filepaths.use_load_ui = bpy.context.preferences.filepaths.use_load_ui
-        
+        bpy.context.user_preferences.filepaths.use_load_ui = bpy.context.user_preferences.filepaths.use_load_ui
         ## set timeline to see anim regions
         timeline_view_all()
-
         # Go in camera if active
         #bpy.context.scene.update()
         if bpy.context.scene.camera:
@@ -89,22 +101,15 @@ def unregister_keymaps():
 
 ###---register--------------
 
-#classes = (RUI_OT_Reload_with_startup_UI_OP)
-
 def register():
     if not bpy.app.background:
-        register_class(RUI_OT_Reload_with_startup_UI_OP)
-        # for cls in classes:
-        #     register_class(cls)
+        bpy.utils.register_module(__name__)
         register_keymaps()
 
 def unregister():
     if not bpy.app.background:
         unregister_keymaps()
-        unregister_class(RUI_OT_Reload_with_startup_UI_OP)
-        # for cls in reversed(classes):
-        #     unregister_class(cls)
-        
+        bpy.utils.unregister_module(__name__)
 
 if __name__ == "__main__":
     register()
