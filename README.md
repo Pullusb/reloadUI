@@ -9,5 +9,6 @@ Blender Addon - Reload file with your own UI
 
 ### Description
 
-Shortcut **ctrl + shift + alt + N** > Reload current file (/!\ without save warning) and load your UI
-Also reset zoom of timeline and go into camview if any
+Shortcut **ctrl + shift + alt + N** : Reload current file with your startup UI (/!\ without save warning !).  
+
+Also reset zoom of timeline and go into camera view (if any)
