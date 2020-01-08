@@ -6,8 +6,8 @@ bl_info = {
     "location": "ctrl + alt + shift + N",
     "description": "reload file with your own UI",
     "warning": "",
-    "wiki_url": "",
-    "tracker_url": "",
+    "wiki_url": "https://github.com/Pullusb/reloadUI",
+    "tracker_url": "https://github.com/Pullusb/reloadUI/issues",
     "category": "System"}
 
 import bpy
