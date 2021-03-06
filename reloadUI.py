@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Reload UI",
     "author": "Samuel Bernou",
-    "version": (0, 1, 0),
+    "version": (0, 1, 1),
     "blender": (2, 81, 0),
     "location": "ctrl + alt + shift + N",
     "description": "reload file with your own UI",
@@ -75,15 +75,12 @@ def register_keymaps():
     #km = addon.keymaps.new(name = "3D View", space_type = "VIEW_3D")#viewD only
     km = addon.keymaps.new(name = "Window",space_type='EMPTY', region_type='WINDOW')#all view
     kmi = km.keymap_items.new("utils.reload_with_startup_ui", type = "N", value = "PRESS", shift = True, alt =True, ctrl = True)
-    addon_keymaps.append(km)
-
+    addon_keymaps.append((km, kmi))
 
 def unregister_keymaps():
-    wm = bpy.context.window_manager
-    for km in addon_keymaps:
-        for kmi in km.keymap_items:
-            km.keymap_items.remove(kmi)
-        wm.keyconfigs.addon.keymaps.remove(km)
+    # wm = bpy.context.window_manager
+    for km, kmi in addon_keymaps:
+        km.keymap_items.remove(kmi)
     addon_keymaps.clear()
 
 
